@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+@theme {
+	--animate-write--speed: 0.05s;
+	--animate-write--easing: cubic-bezier(0.39, 0.58, 0.57, 1);
+
+	--animate-write--step-1-t: calc(var(--animate-write--speed) * 6);
+	--animate-write--step-1-d: 0s;
+
+	--animate-write--step-2-t: calc(var(--animate-write--speed) * 3);
+	--animate-write--step-2-d: calc(
+		var(--animate-write--step-1-d) + var(--animate-write--step-1-t)
+	);
+
+	--animate-write--step-3-t: calc(var(--animate-write--speed) * 5);
+	--animate-write--step-3-d: calc(
+		var(--animate-write--step-2-d) + var(--animate-write--step-2-t)
+	);
+
+	--animate-write--step-4-t: calc(var(--animate-write--speed) * 5);
+	--animate-write--step-4-d: calc(
+		var(--animate-write--step-3-d) + var(--animate-write--step-3-t)
+	);
+
+	--animate-write--step-5-t: calc(var(--animate-write--speed) * 4);
+	--animate-write--step-5-d: calc(
+		var(--animate-write--step-4-d) + var(--animate-write--step-4-t)
+	);
+
+	--animate-write--step-6-t: calc(var(--animate-write--speed) * 3);
+	--animate-write--step-6-d: calc(
+		var(--animate-write--step-5-d) + var(--animate-write--step-5-t) +
+			calc(var(--animate-write--speed) * 3)
+	);
+	--animate-write--final-d: calc(
+		var(--animate-write--step-6-d) + var(--animate-write--step-6-t)
+	);
+
+	--animate-write-step-1: draw var(--animate-write--step-1-t)
+		var(--animate-write--easing) var(--animate-write--step-1-d) forwards;
+	--animate-write-step-2: draw var(--animate-write--step-2-t)
+		var(--animate-write--easing) var(--animate-write--step-2-d) forwards;
+	--animate-write-step-3: draw var(--animate-write--step-3-t)
+		var(--animate-write--easing) var(--animate-write--step-3-d) forwards;
+	--animate-write-step-4: draw var(--animate-write--step-4-t)
+		var(--animate-write--easing) var(--animate-write--step-4-d) forwards;
+	--animate-write-step-5: draw var(--animate-write--step-5-t)
+		var(--animate-write--easing) var(--animate-write--step-5-d) forwards;
+	--animate-write-step-6: draw var(--animate-write--step-6-t)
+		var(--animate-write--easing) var(--animate-write--step-6-d) forwards;
+
+	@keyframes draw {
+		to {
+			stroke-dashoffset: 0;
+		}
+	}
+
+	@keyframes appear {
+		to {
+			opacity: 1;
+		}
+	}
+
+	@keyframes scroll-entry {
+		to {
+			--trigger-scroll-entry: true;
+		}
+	}
+}
+
+@utility animate-appear {
+	animation: appear var(--animate-appear--t, 0.2s) ease-in-out
+		var(--animate-appear--d, 0s) forwards;
+}
+
+@utility animate-duration-* {
+	animation-duration: calc(--value(integer) * 1s);
+	animation-duration: --value([\*]);
+}
+
+@utility animate-delay-* {
+	animation-delay: calc(--value(integer) * 1s);
+	animation-delay: --value([\*]);
+}
+
+@utility content-grid {
+	--grid-padding-inline: clamp(
+		calc(var(--spacing) * 4),
+		5vw,
+		calc(var(--spacing) * 24)
+	);
+
+	--grid-breakout-width: 1fr;
+	--grid-content-width: 10rem;
+	--grid-narrow-width: 20rem;
+	--grid-center-offset-width: 20rem;
+
+	display: grid;
+	width: 100%;
+	grid-auto-rows: fit-content(100dvh);
+	grid-template-columns:
+		[full-width-start]
+		var(--grid-padding-inline)
+		[breakout-start]
+		minmax(0, var(--grid-breakout-width))
+		[content-start]
+		minmax(0, var(--grid-content-width))
+		[narrow-start]
+		min(
+			25% - var(--grid-padding-inline),
+			calc(var(--grid-center-offset-width) / 2)
+		)
+		[center-offset-start]
+		min(25%, calc(var(--grid-narrow-width) / 2))
+		[center-line]
+		min(25%, calc(var(--grid-narrow-width) / 2))
+		[center-offset-end]
+		min(
+			25% - var(--grid-padding-inline),
+			calc(var(--grid-center-offset-width) / 2)
+		)
+		[narrow-end]
+		minmax(0, var(--grid-content-width))
+		[content-end]
+		minmax(0, var(--grid-breakout-width))
+		[breakout-end]
+		var(--grid-padding-inline)
+		[full-width-end];
+
+	--col-from: full-width-start;
+	--col-to: full-width-end;
+
+	> * {
+		display: grid;
+		grid-column: var(--col-from) / var(--col-to);
+		grid-template-columns: subgrid;
+
+		> * {
+			grid-column: var(--col-from) / var(--col-to);
+		}
+	}
+}
+
+@utility col-span--full {
+	--col-from: full-width-start;
+	--col-to: full-width-end;
+}
+
+@utility col-from--full {
+	--col-from: full-width-start;
+}
+
+@utility col-to--full {
+	--col-to: full-width-end;
+}
+
+@utility col-span--breakout {
+	--col-from: breakout-start;
+	--col-to: breakout-end;
+}
+
+@utility col-from--breakout {
+	--col-from: breakout-start;
+}
+
+@utility col-to--breakout {
+	--col-to: breakout-end;
+}
+
+@utility col-span--content {
+	--col-from: content-start;
+	--col-to: content-end;
+}
+
+@utility col-from--content {
+	--col-from: content-start;
+}
+
+@utility col-to--content {
+	--col-to: content-end;
+}
+
+@utility col-span--narrow {
+	--col-from: narrow-start;
+	--col-to: narrow-end;
+}
+
+@utility col-from--narrow {
+	--col-from: narrow-start;
+}
+
+@utility col-to--narrow {
+	--col-to: narrow-end;
+}
+
+@utility col-from--center-offset {
+	--col-from: center-offset-start;
+
+	@media (width <= theme(--breakpoint-sm)) {
+		--col-from: content-end;
+	}
+}
+
+@utility col-from--center-offset-end {
+	--col-from: center-offset-end;
+
+	@media (width <= theme(--breakpoint-sm)) {
+		--col-from: content-end;
+	}
+}
+
+@utility col-to--center-offset {
+	--col-to: center-offset-end;
+
+	@media (width <= theme(--breakpoint-sm)) {
+		--col-to: content-end;
+	}
+}
+
+@utility col-to--center-offset-start {
+	--col-to: center-offset-start;
+
+	@media (width <= theme(--breakpoint-sm)) {
+		--col-to: content-end;
+	}
+}
+
+@utility col-from--center {
+	--col-from: center-line;
+
+	@media (width <= theme(--breakpoint-sm)) {
+		--col-from: content-start;
+	}
+}
+
+@utility col-to--center {
+	--col-to: center-line;
+
+	@media (width <= theme(--breakpoint-sm)) {
+		--col-to: content-end;
+	}
+}

@@ -1,0 +1,21 @@
+{
+	"name": "ovenwand-com",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"dev": "bun ./app/server.ts"
+	},
+	"devDependencies": {
+		"@trivago/prettier-plugin-sort-imports": "^5.2.2",
+		"@types/bun": "^1.2.16",
+		"prettier": "^3.5.3",
+		"prettier-plugin-tailwindcss": "^0.6.12",
+		"tailwindcss": "^4.1.10"
+	},
+	"peerDependencies": {
+		"typescript": "^5.8.3"
+	},
+	"dependencies": {
+		"bun-plugin-tailwind": "^0.0.15"
+	}
+}
