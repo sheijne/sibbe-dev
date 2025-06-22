@@ -39,6 +39,7 @@ async function build() {
 		outdir: OUTDIR,
 		target: "bun",
 		env: "inline",
+		minify: Bun.env.NODE_ENV === "production",
 		plugins: [tailwind],
 	});
 
