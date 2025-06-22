@@ -1,0 +1,18 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "tasks": {
+    "build": {
+      "inputs": ["app/**", "scripts/build.ts"],
+      "outputs": ["dist/**"]
+    },
+    "deploy": {
+      "inputs": ["dist/**", "scripts/deploy.ts"],
+      "outputs": [".vercel/output/**"],
+      "dependsOn": ["build"]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    }
+  }
+}
